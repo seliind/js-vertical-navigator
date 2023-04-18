@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./main.css" />
+    <title>Gis Town</title>
+  </head>
+  <body>
+    <div class="home">
+      <h1>H O M E</h1>
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Recusandae
+        vero quas quae!
+      </p>
+    </div>
+    <div class="section" id="one" data-label="one">One</div>
+    <div class="section" id="two" data-label="Two">Two</div>
+    <div class="section" id="three" data-label="Three">Three</div>
+    <div class="section" id="four" data-label="Four">Four</div>
+    <div class="section" id="five" data-label="Five">Five</div>
+    <div class="section" id="six" data-label="Six">Six</div>
+    <div class="section" id="seven" data-label="Seven">Seven</div>
+    <div class="section" id="eight" data-label="Eight">Eight</div>
+    <div class="section" id="nine" data-label="Nine">Nine</div>
+    <div class="section" id="ten" data-label="Ten">Ten</div>
+
+    <script>
+      function activateNavigation() {
+        const sections = document.querySelectorAll(".section");
+        const navContainer = document.createElement("nav");
+        const navItems = Array.from(sections).map((section) => {
+          return `
+                    <div class="nav-item" data-for-section="${section.id}">
+                        <a href="#${section.id}" class="nav-link"></a>
+                        <span class="nav-label">${section.dataset.label}</span>
+                    </div>
+                `;
+        });
+
+        navContainer.classList.add("nav");
+        navContainer.innerHTML = navItems.join("");
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            document.querySelectorAll(".nav-link").forEach((navLink) => {
+              navLink.classList.remove("nav-link-selected");
+            });
+
+            const visibleSection = entries.filter((entry) => entry.isIntersecting)[0];
+            console.log(visibleSection)
+            document.querySelector(
+                `.nav-item[data-for-section="${visibleSection.target.id}"] .nav-link`
+              )
+              .classList.add("nav-link-selected");
+          },
+          { threshold: 0.5 }
+        );
+
+        sections.forEach((section) => observer.observe(section));
+
+        document.body.appendChild(navContainer);
+      }
+
+      activateNavigation();
+    </script>
+  </body>
+</html>
